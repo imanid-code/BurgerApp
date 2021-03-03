@@ -1,9 +1,9 @@
 const connection = require ("../config/connection.js");
 
 const orm = {
-    selectAll(burgers, callback){
+    selectAll(tableName, callback){
     //?? double ? is for table or column names
-    connection.query("SELECT * FROM ??", [burgers], (err, result) => {
+    connection.query("SELECT * FROM ??", [tableName], (err, result) => {
         if (err) throw err;
         if (typeof callback === 'function'){
             callback(result);
@@ -11,8 +11,8 @@ const orm = {
     });
 },
 
-insertOne(burgers, burger_name, devoured, callback){
-    connection.query( "INSERT INTO ??",  [burgers] , (err, result) => {
+insertOne(tableName, nameColumn, nameValue, devoredColumn, callback){
+    connection.query( "INSERT INTO ??",  [tableName,nameColumn,nameValue,devoredColumn] , (err, result) => {
         if (err) throw err;
         if (typeof callback === 'function'){
             callback(result);
@@ -20,8 +20,8 @@ insertOne(burgers, burger_name, devoured, callback){
 })
 
 
-updateOne(burgers, burger_name, devoured, callback);{
-    connection.query( "UPDATE ??",  [burgers] , (err, result) => {
+updateOne(tableName, nameColumn, nameValue, devoredColumn, callback);{
+    connection.query( "UPDATE ??",  [tableName,nameColumn,nameValue,devoredColumn] , (err, result) => {
         if (err) throw err;
         if (typeof callback === 'function'){
             callback(result);
@@ -31,8 +31,8 @@ updateOne(burgers, burger_name, devoured, callback);{
 
 
 
-delete(burgers, burger_name, devoured, callback);{
-    connection.query("DELETE FROM ?? WHERE ID = ?", [burgers, burger.id] , (err,result) => {
+delete(tableName, id, callback);{
+    connection.query("DELETE FROM ?? WHERE ID = ?", [tableName,id] , (err,result) => {
         if (err) throw err;
         if (typeof callback === 'function'){
             callback(result);
@@ -40,3 +40,5 @@ delete(burgers, burger_name, devoured, callback);{
     })
 }
 }}
+
+module.exports = orm;
