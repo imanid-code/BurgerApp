@@ -1,4 +1,53 @@
 <div class="jumbotron jumbotron-fluid text-center" id="header">
+    <h1>Eat da Burger!!!!!!</h1>
+</div>
 
-    
+<div class="container-fluid" id="body">
+<h2 class="text-center" id="addburger">Add A Burger</h2> 
+<div class="container-fluid">
+<div class="row justify-content-center">
+    <form class="text-center col-6 mb-4">
+<div class="form-group">
+    <label for="burger"> Burger Name: </label>
+    <input type="text" class="form" id="burger" name="nameburger">
+</div>
+<buttong type="submit" class="btn-primary" id="burger-button"> Add Burger </buttong>
+    </form>
+</div>
+
+</div>
+
+
+ <div class="container-fluid">
+        <div class="row">
+            <div class="col-5 ml-5">
+                <div class="card mb-3">
+                    <h2 class="text-center card-title pt-3">Burgers that haven't been devoured</h2>
+
+                    <ul class="list-group card-body pl-3">
+                        {{#each burgers}}
+                        {{#unless devoured}}
+                        {{> burgers/burger-block devoured=true}}
+                        {{/unless}}
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-5 ml-3">
+                <div class="card mb-3">
+                    <h2 class="text-center card-title pt-3">Burgers that have been devoured</h2>
+
+                    <ul class="list-group card-body pl-3">
+                        {{#each burgers}}
+                        {{#if devoured}}
+                        {{> burgers/burger-block devoured=false}}
+                        {{/if}}
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
