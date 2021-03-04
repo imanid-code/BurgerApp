@@ -2,40 +2,40 @@
 const connection = require("../config/connection.js");
 
 // Helper function for SQL syntax to add question marks (?, ?, ?) in query
-const printQuestionMarks = (num)=>{
+const printQuestionMarks = (num) => {
     const arrayQuestionMark = [];
 
-    for (let i=0; i < num; i++){
+    for (let i = 0; i < num; i++) {
         arrayQuestionMark.push('?');
     }
     return arrayQuestionMark.toString();
 };
 
 // Helper function to convert object key/value pairs to SQL syntax
-const objToSql = (ob) =>{
+const objToSql = (ob) => {
     const keyArray = [];
 
-      // Loop through the keys and push the key/value as a string int arr
-for (const key in ob){
-    let value = ob[key];
+    // Loop through the keys and push the key/value as a string int arr
+    for (const key in ob) {
+        let value = ob[key];
 
-    //Check to skip hidden properties 
-    if (Object.hasOwnProperty.call(ob, key)){
-        //If string with spaces, add quotations (Lana Del Grey => 'Lana Del Grey')
-        if(typeof value === 'string' && value.indexOf(' ') >= 0){
-            value = `'${value}'`;
+        //Check to skip hidden properties 
+        if (Object.hasOwnProperty.call(ob, key)) {
+            //If string with spaces, add quotations (Lana Del Grey => 'Lana Del Grey')
+            if (typeof value === 'string' && value.indexOf(' ') >= 0) {
+                value = `'${value}'`;
 
+            }
+
+            // e.g. {name: 'Lana Del Grey'} => ["name='Lana Del Grey'"]
+            // e.g. {sleepy: true} => ["sleepy=true"]
+
+            keyArray.push(`${key}=${value}`);
         }
-
-         // e.g. {name: 'Lana Del Grey'} => ["name='Lana Del Grey'"]
-      // e.g. {sleepy: true} => ["sleepy=true"]
-
-      keyArray.push(`${key}=${value}`);
     }
-}
 
-//Translate array of strings to a single comma-seperated string 
-return keyArray.toString();
+    //Translate array of strings to a single comma-seperated string 
+    return keyArray.toString();
 };
 
 
@@ -55,7 +55,12 @@ const orm = {
     insertOne(table, cols, vals, callback) {
         let queryString = `INSERT INTO ${table}`;
 
-        //queryString +=
+        queryString += '(';
+        queryString += cols.toString();
+        queryString += ')';
+        queryString += ' VALUES (';
+        queryString += printQuestionMarks(vals.length);
+        queryString += ') ';
 
         console.log(queryString)
         connection.query(queryString, vals, (err, result) => {
@@ -64,33 +69,41 @@ const orm = {
         });
 
     },
-      // An example of objColVals would be {name: panther, sleepy: true}
+    // An example of objColVals would be {name: panther, sleepy: true}
 
-    updateOne(table, objColVals, condition, callback){
+    updateOne(table, objColVals, condition, callback) {
         let queryString = `UPDATE ${table}`;
 
-//queryString +=
+        queryString += ' SET';
+        queryString += objToSql(objColVals);
+        queryString += ' WHERE ';
+        queryString += condition;
 
-console.log(queryString);
-connection.query(queryString, (err, result) => {
-    if (err) { throw err; }
-    callback(result);
-});
-    
-
-
-
-
-
-delete (tableName, id, callback); {
-    connection.query("DELETE FROM ?? WHERE ID = ?", [tableName, id], (err, result) => {
-        if (err) throw err;
-        if (typeof callback === 'function') {
+        console.log(queryString);
+        connection.query(queryString, (err, result) => {
+            if (err) { throw err; }
             callback(result);
-        }
-    })
-}
-    }}
+        });
+
+
+    },
+
+
+
+        delete (tableName, id, callback) {
+            let queryString = "DELETE FROM ?? WHERE ID = ?";
+            console.log(queryString);
+
+            connection.query(queryString, [tableName, id], function (err, res) {
+
+
+                if (err) throw err;
+                if (typeof callback === 'function') {
+                    callback(result);
+                })
+            }
+        };
+
 
 
     //export orm object for model (burger.js)
