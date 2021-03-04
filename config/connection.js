@@ -7,7 +7,7 @@ const connection = mysql.createConnection({
     password: '12345678',
     database: 'burger_db',
 });
-
+//makes connection
 connection.connect((err) => {
     if (err) {
         console.error(`error connecting: ${err.stack}`);
@@ -17,4 +17,5 @@ connection.connect((err) => {
 
 });
 
+//exported for ORM to use 
 module.exports = connection;

@@ -7,6 +7,27 @@ const burger = {
         });
     },
 
-    insertOne(co)
+    insertOne(cols, vals, callback){
+        orm.insertOne("burgers", cols, vals, function(result){
+            callback(result);
+        });
+    },
 
+
+        updateOne(objColVals, condition, callback){
+            orm.updateOne("burgers" , objColVals, condition, function(result){
+                callback(result);
+            });
+        },
+        //?
+        delete(id, callback){
+            orm.delete("burgers", req.params.id, function(result){
+                callback(result)
+            })
+        }
 }
+
+
+
+//export the db function for controller (burgercontroller.js)
+module.exports = burger;

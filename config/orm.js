@@ -1,44 +1,97 @@
-const connection = require ("../config/connection.js");
+//import to mysql connection 
+const connection = require("../config/connection.js");
 
+// Helper function for SQL syntax to add question marks (?, ?, ?) in query
+const printQuestionMarks = (num)=>{
+    const arrayQuestionMark = [];
+
+    for (let i=0; i < num; i++){
+        arrayQuestionMark.push('?');
+    }
+    return arrayQuestionMark.toString();
+};
+
+// Helper function to convert object key/value pairs to SQL syntax
+const objToSql = (ob) =>{
+    const keyArray = [];
+
+      // Loop through the keys and push the key/value as a string int arr
+for (const key in ob){
+    let value = ob[key];
+
+    //Check to skip hidden properties 
+    if (Object.hasOwnProperty.call(ob, key)){
+        //If string with spaces, add quotations (Lana Del Grey => 'Lana Del Grey')
+        if(typeof value === 'string' && value.indexOf(' ') >= 0){
+            value = `'${value}'`;
+
+        }
+
+         // e.g. {name: 'Lana Del Grey'} => ["name='Lana Del Grey'"]
+      // e.g. {sleepy: true} => ["sleepy=true"]
+
+      keyArray.push(`${key}=${value}`);
+    }
+}
+
+//Translate array of strings to a single comma-seperated string 
+return keyArray.toString();
+};
+
+
+//object for all sql statment function , define funciton here and provoke/call function in controller file 
 const orm = {
-    selectAll(tableName, callback){
-    //?? double ? is for table or column names
-    connection.query("SELECT * FROM ??", [tableName], (err, result) => {
-        if (err) throw err;
-        if (typeof callback === 'function'){
+
+    selectAll(tableInput, callback) {
+        const queryString = `SELECT * FROM ${tableInput};`;
+        connection.query(queryString, (err, result) => {
+            if (err) { throw err; }
             callback(result);
         }
-    });
-},
+        )
+    },
 
-insertOne(tableName, nameColumn, nameValue, devoredColumn, callback){
-    connection.query( "INSERT INTO ??",  [tableName,nameColumn,nameValue,devoredColumn] , (err, result) => {
-        if (err) throw err;
-        if (typeof callback === 'function'){
+
+    insertOne(table, cols, vals, callback) {
+        let queryString = `INSERT INTO ${table}`;
+
+        //queryString +=
+
+        console.log(queryString)
+        connection.query(queryString, vals, (err, result) => {
+            if (err) { throw err; }
             callback(result);
-    }
-})
+        });
+
+    },
+      // An example of objColVals would be {name: panther, sleepy: true}
+
+    updateOne(table, objColVals, condition, callback){
+        let queryString = `UPDATE ${table}`;
+
+//queryString +=
+
+console.log(queryString);
+connection.query(queryString, (err, result) => {
+    if (err) { throw err; }
+    callback(result);
+});
+    
 
 
-updateOne(tableName, nameColumn, nameValue, devoredColumn, callback);{
-    connection.query( "UPDATE ??",  [tableName,nameColumn,nameValue,devoredColumn] , (err, result) => {
+
+
+
+delete (tableName, id, callback); {
+    connection.query("DELETE FROM ?? WHERE ID = ?", [tableName, id], (err, result) => {
         if (err) throw err;
-        if (typeof callback === 'function'){
+        if (typeof callback === 'function') {
             callback(result);
-    }
-})
-}
-
-
-
-delete(tableName, id, callback);{
-    connection.query("DELETE FROM ?? WHERE ID = ?", [tableName,id] , (err,result) => {
-        if (err) throw err;
-        if (typeof callback === 'function'){
-            callback(result);
-    } 
+        }
     })
 }
-}}
+    }}
 
+
+    //export orm object for model (burger.js)
 module.exports = orm;
