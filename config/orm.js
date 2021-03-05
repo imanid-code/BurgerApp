@@ -74,7 +74,7 @@ const orm = {
     updateOne(table, objColVals, condition, callback) {
         let queryString = `UPDATE ${table}`;
 
-        queryString += ' SET';
+        queryString += ' SET ';
         queryString += objToSql(objColVals);
         queryString += ' WHERE ';
         queryString += condition;
@@ -98,11 +98,12 @@ const orm = {
 
 
                 if (err) throw err;
-                if (typeof callback === 'function') {
-                    callback(result);
-                })
-            }
-        };
+                
+                    callback(res);
+                
+            });
+        }
+    };
 
 
 

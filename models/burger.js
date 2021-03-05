@@ -21,7 +21,7 @@ const burger = {
         },
         //?
         delete(id, callback){
-            orm.delete("burgers", req.params.id, function(result){
+            orm.delete("burgers", id, function(result){
                 callback(result)
             })
         }

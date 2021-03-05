@@ -8,24 +8,24 @@ const router = express.Router();
 //Routes 
 
 router.get('/', (req, res) => {
-    burger.selectAll((data)) => {
+    burger.selectAll((data) => {
         const hbsObj = {
             burgers: data,
         };
         console.log(hbsObj);
         res.render("index", hbsObj);
-    }},
+    })},
 
 
 router.post("/api/burgers", function (req, res) {
-    burger.insertOne(['burger_name', 'devoured'] [req.body.burger_name, req.body.devoured], (result) => {
+    burger.insertOne(['burger_name', 'devoured'], [req.body.burger_name, req.body.devoured], (result) => {
         //send back id of new burger 
         res.json({ id: result.insertId });
     });
 
 }));
 
-router.put('api/burgers/:id', (req, res) => {
+router.put('/api/burgers/:id', (req, res) => {
     const condition = `id = ${req.params.id}`;
     console.log('condition', condition)
 
@@ -58,4 +58,4 @@ router.delete("/api/burgers/:id", function(req, res){
 
 
 //export routes for server for use 
-modeule.exports = router; 
+module.exports = router; 
