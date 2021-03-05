@@ -1,15 +1,15 @@
-<li>
+<ol>
     {{burger_name}}
 
     {{#if devoured}}
-    <button class="move-devoured btn float-right" id="devour-button" data-id="{{id}}" data-newdevoured="{{devoured}}">
+    <button class="move-devoured btn float-right" id="devour-button" style="border: 2px solid green; background-color: green; margin-top:10px; color: white;" data-id="{{id}}" data-newdevoured="{{devoured}}">
         <span>DEVOUR ME!</span>
     </button>
 {{/if}}
 {{#unless devoured}}
 
-<button class="delete-burger btn float-right" id="delete-button" data-id="{{id}}">
+<button class="delete-burger btn float-right" id="delete-button" style="border: 2px solid green; background-color:green; margin-top: 10px; color: white" data-id="{{id}}">
     <span>DELETE BURGER!</span>
 </button>
 {{/unless}}
-</li>
+</ol>

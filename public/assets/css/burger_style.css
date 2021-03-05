@@ -6,3 +6,12 @@
     background-image: url(../img/burger.jpeg)
 }
 
+ol{
+    border: 2px solid red;
+    background-color: red;
+    color: white;
+    font-size: 30px;
+    padding-left: 10px;
+    padding-top: 10;
+    margin-right: 10px;
+}
